@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Partidas de Truco</title>
+
+<style>
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#292D3E;
+color:white;
+}
+
+
+/* PORTADA */
+
+.portada{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+
+background:
+linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.8)),
+url("https://i.imgur.com/8kP9FZP.jpg");
+
+background-size:cover;
+background-position:center;
+}
+
+
+.portada img{
+width:300px;
+border-radius:15px;
+margin-bottom:20px;
+box-shadow:0px 10px 30px black;
+}
+
+
+.titulo{
+font-size:55px;
+letter-spacing:3px;
+margin-bottom:10px;
+}
+
+.sub{
+color:#bbb;
+margin-bottom:40px;
+}
+
+
+/* BOTON */
+
+.boton{
+
+padding:15px 40px;
+background:#1f7a3a;
+border-radius:30px;
+text-decoration:none;
+color:white;
+font-size:20px;
+transition:0.3s;
+
+}
+
+.boton:hover{
+
+background:#2da24e;
+transform:scale(1.1);
+
+}
+
+
+/* HISTORIAL */
+
+.contenedor{
+max-width:900px;
+margin:auto;
+padding:40px 20px;
+}
+
+.tituloSeccion{
+text-align:center;
+font-size:40px;
+margin-bottom:40px;
+}
+
+
+
+/* TARJETAS */
+
+.partida{
+
+background:#141414;
+border-radius:12px;
+margin-bottom:20px;
+display:flex;
+align-items:center;
+overflow:hidden;
+transition:0.3s;
+box-shadow:0px 5px 20px rgba(0,0,0,0.6);
+
+}
+
+.partida:hover{
+
+transform:scale(1.03);
+background:#1a1a1a;
+
+}
+
+
+.partida img{
+
+width:170px;
+height:130px;
+object-fit:cover;
+
+}
+
+
+.info{
+padding:20px;
+}
+
+.fecha{
+font-size:22px;
+font-weight:bold;
+}
+
+.jugadores{
+color:#aaa;
+margin-top:5px;
+}
+
+
+footer{
+text-align:center;
+padding:20px;
+color:#777;
+margin-top:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- PORTADA -->
+
+<section class="portada">
+
+
+<div class="titulo">
+PARTIDAS DE TRUCO 🃏
+</div>
+
+<div class="sub">
+Historial oficial
+</div>
+
+<a href="#partidas" class="boton">
+Explorar partidas ↓
+</a>
+
+</section>
+
+
+
+
+<!-- PARTIDAS -->
+
+<section id="partidas">
+
+<div class="contenedor">
+
+<div class="tituloSeccion">
+Historial
+</div>
+
+
+
+<div class="partida">
+<img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z">
+<div class="info">
+<div class="fecha">24/07/2024</div>
+<div class="jugadores">Pablo y Luca</div>
+</div>
+</div>
+
+
+<div class="partida">
+<img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56">
+<div class="info">
+<div class="fecha">03/01/2025</div>
+<div class="jugadores">Eze y Gio</div>
+</div>
+</div>
+
+
+<div class="partida">
+<img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56">
+<div class="info">
+<div class="fecha">02/02/2025</div>
+<div class="jugadores">Eze y Gio</div>
+</div>
+</div>
+
+
+<div class="partida">
+<img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z">
+<div class="info">
+<div class="fecha">06/08/2025</div>
+<div class="jugadores">Pablo y Luca</div>
+</div>
+</div>
+
+
+<div class="partida">
+<img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z">
+<div class="info">
+<div class="fecha">06/08/2025</div>
+<div class="jugadores">Pablo y Luca</div>
+</div>
+</div>
+
+
+<div class="partida">
+<img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z">
+<div class="info">
+<div class="fecha">15/08/2025</div>
+<div class="jugadores">Pablo y Luca</div>
+</div>
+</div>
+
+
+<div class="partida">
+<img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56">
+<div class="info">
+<div class="fecha">13/01/2026</div>
+<div class="jugadores">Eze y Gio</div>
+</div>
+</div>
+
+
+<div class="partida">
+<img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56">
+<div class="info">
+<div class="fecha">27/02/2026</div>
+<div class="jugadores">Eze y Gio</div>
+</div>
+</div>
+
+
+
+</div>
+
+</section>
+
+
+<footer>
+Club del Truco © 2026
+</footer>
+
+</body>
+</html>
