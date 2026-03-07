@@ -2,266 +2,1258 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Partidas de Truco</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Club del Truco</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 
-html{
-scroll-behavior:smooth;
+:root {
+  --verde: #2ecc71;
+  --verde-oscuro: #1a7a40;
+  --fondo: #0e0e0e;
+  --card: #161616;
+  --card2: #1c1c1c;
+  --texto: #f0f0f0;
+  --gris: #888;
+  --borde: rgba(255,255,255,0.07);
+  --acento: #f0c040;
 }
 
-body{
-margin:0;
-font-family:Arial, sans-serif;
-background:#292D3E;
-color:white;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html { scroll-behavior: smooth; }
 
-/* PORTADA */
-
-.portada{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-
-background:
-linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.8)),
-url("https://imageonline.co/bg/smoky-black-background.png");
-background-size:cover;
-background-position:center;
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  overflow-x: hidden;
 }
 
 
-.portada img{
-width:300px;
-border-radius:15px;
-margin-bottom:20px;
-box-shadow:0px 10px 30px black;
+/* ═══════════════════════════════════════
+   PANTALLA DE CONTRASEÑA
+═══════════════════════════════════════ */
+
+#lock-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #080808;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+#lock-screen.salir {
+  opacity: 0;
+  transform: scale(1.03);
+  pointer-events: none;
+}
+
+.lock-glow {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(46,204,113,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: pulso 3s ease-in-out infinite;
+}
+
+@keyframes pulso {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+.lock-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  background: linear-gradient(160deg, #1a1a1a, #111);
+  border: 1px solid var(--borde);
+  border-radius: 24px;
+  padding: 44px 36px 40px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+  text-align: center;
+}
+
+.lock-icono {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--verde-oscuro), var(--verde));
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 28px;
+  box-shadow: 0 8px 24px rgba(46,204,113,0.3);
+}
+
+.lock-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.lock-sub {
+  color: var(--gris);
+  font-size: 13px;
+  margin-bottom: 32px;
+  letter-spacing: 0.5px;
+}
+
+.input-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.input-wrap input {
+  width: 100%;
+  padding: 16px 50px 16px 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  color: var(--texto);
+  font-size: 16px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.3s, background 0.3s;
+  -webkit-appearance: none;
+}
+
+.input-wrap input:focus {
+  border-color: var(--verde);
+  background: rgba(46,204,113,0.05);
+}
+
+.input-wrap input::placeholder { color: #555; }
+
+.ojo-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--gris);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 18px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.ojo-btn:hover { color: var(--verde); }
+
+.btn-entrar {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--verde-oscuro), var(--verde));
+  border: none;
+  border-radius: 14px;
+  color: white;
+  font-size: 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  box-shadow: 0 6px 20px rgba(46,204,113,0.3);
+  margin-top: 4px;
+  -webkit-appearance: none;
+}
+
+.btn-entrar:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(46,204,113,0.4); }
+.btn-entrar:active { transform: scale(0.98); opacity: 0.9; }
+
+.error-msg {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 14px;
+  min-height: 18px;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+.error-msg.visible { opacity: 1; }
+
+.lock-footer {
+  margin-top: 28px;
+  font-size: 11px;
+  color: #444;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 
-.titulo{
-font-size:55px;
-letter-spacing:3px;
-margin-bottom:10px;
+/* ═══════════════════════════════════════
+   CONTENIDO PRINCIPAL
+═══════════════════════════════════════ */
+
+#contenido {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+#contenido.visible { opacity: 1; }
+
+
+/* HERO */
+
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(46,204,113,0.1) 0%, transparent 70%), #0e0e0e;
 }
 
-.sub{
-color:#bbb;
-margin-bottom:40px;
+.hero-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.hero-linea {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--verde), transparent);
+  opacity: 0.4;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(46,204,113,0.1);
+  border: 1px solid rgba(46,204,113,0.25);
+  border-radius: 100px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--verde);
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s ease both;
+}
+
+.hero-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 12vw, 88px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -2px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+
+.hero-titulo span {
+  color: var(--verde);
+  display: block;
+}
+
+.hero-desc {
+  color: var(--gris);
+  font-size: clamp(14px, 3vw, 17px);
+  max-width: 380px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: transparent;
+  border: 1.5px solid var(--verde);
+  border-radius: 100px;
+  color: var(--verde);
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.hero-btn:hover {
+  background: var(--verde);
+  color: #000;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(46,204,113,0.3);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 48px;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--verde);
+}
+
+.stat-lbl {
+  font-size: 11px;
+  color: var(--gris);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+}
+
+.hero-divider {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--borde), transparent);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 
-/* BOTON */
+/* SECCIÓN HISTORIAL */
 
-.boton{
-
-padding:15px 40px;
-background:#1f7a3a;
-border-radius:30px;
-text-decoration:none;
-color:white;
-font-size:20px;
-transition:0.3s;
-
+.seccion {
+  padding: 80px 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.boton:hover{
+.seccion-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-background:#2da24e;
-transform:scale(1.1);
+.seccion-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 7vw, 40px);
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
 
+.seccion-count {
+  font-size: 13px;
+  color: var(--gris);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.05);
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--borde);
 }
 
 
-/* HISTORIAL */
+/* FILTROS */
 
-.contenedor{
-max-width:900px;
-margin:auto;
-padding:40px 20px;
+.filtros {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
 }
 
-.tituloSeccion{
-text-align:center;
-font-size:40px;
-margin-bottom:40px;
+.filtro-btn {
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1.5px solid var(--borde);
+  background: transparent;
+  color: var(--gris);
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 
+.filtro-btn:hover, .filtro-btn.activo {
+  border-color: var(--verde);
+  color: var(--verde);
+  background: rgba(46,204,113,0.08);
+}
 
 
 /* TARJETAS */
 
-.partida{
+.lista-partidas { display: flex; flex-direction: column; gap: 14px; }
 
-background:#141414;
-border-radius:12px;
-margin-bottom:20px;
-display:flex;
-align-items:center;
-overflow:hidden;
-transition:0.3s;
-box-shadow:0px 5px 20px rgba(0,0,0,0.6);
-
+.partida {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s, box-shadow 0.25s;
+  animation: fadeUp 0.5s ease both;
+  cursor: default;
 }
 
-.partida:hover{
+.partida:hover {
+  transform: translateY(-3px);
+  border-color: rgba(46,204,113,0.25);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
 
-transform:scale(1.03);
-background:#1a1a1a;
+.partida img {
+  width: 110px;
+  height: 90px;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
 
+.partida-info {
+  padding: 16px 20px;
+  min-width: 0;
+}
+
+.partida-fecha {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  white-space: nowrap;
+}
+
+.partida-jugadores {
+  font-size: 13px;
+  color: var(--gris);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.partida-jugadores::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--verde);
+  flex-shrink: 0;
+}
+
+.partida-equipo {
+  padding: 12px 20px 12px 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.equipo-pl { color: var(--acento); }
+.equipo-eg { color: #8ed8f8; }
+
+
+/* SEPARADORES AÑO */
+
+.año-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #444;
+  padding: 8px 0 4px;
+  border-bottom: 1px solid var(--borde);
+  margin-bottom: 14px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.año-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--borde);
 }
 
 
-.partida img{
+/* FOOTER */
 
-width:170px;
-height:130px;
-object-fit:cover;
+footer {
+  text-align: center;
+  padding: 40px 20px 50px;
+  font-size: 12px;
+  color: #333;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-top: 1px solid var(--borde);
+}
 
+footer span { color: var(--verde); }
+
+
+/* ═══════════════════════════════════════
+   PANEL DE ESTADÍSTICAS
+═══════════════════════════════════════ */
+
+.stats-panel {
+  background: linear-gradient(135deg, #111 0%, #161616 100%);
+  border: 1px solid var(--borde);
+  border-radius: 20px;
+  padding: 28px 28px 24px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--acento), var(--verde), #8ed8f8);
+}
+
+.stats-panel-titulo {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.marcador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 24px;
+}
+
+.marcador-equipo {
+  flex: 1;
+  text-align: center;
+}
+
+.marcador-nombre {
+  font-size: 12px;
+  color: var(--gris);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.marcador-puntos {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(42px, 10vw, 64px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.marcador-puntos.pl { color: var(--acento); }
+.marcador-puntos.eg { color: #8ed8f8; }
+
+.marcador-vs {
+  font-size: 14px;
+  color: #333;
+  letter-spacing: 2px;
+  padding: 0 16px;
+  font-weight: 300;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.stat-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 12px 10px;
+  text-align: center;
+}
+
+.stat-item-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--texto);
+  margin-bottom: 3px;
+}
+
+.stat-item-lbl {
+  font-size: 10px;
+  color: #555;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.empate-badge {
+  display: inline-block;
+  background: rgba(240,192,64,0.12);
+  border: 1px solid rgba(240,192,64,0.3);
+  color: var(--acento);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 20px;
 }
 
 
-.info{
-padding:20px;
+/* ═══════════════════════════════════════
+   BADGE ÚLTIMA PARTIDA
+═══════════════════════════════════════ */
+
+.ultima-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(46,204,113,0.1);
+  border: 1px solid rgba(46,204,113,0.25);
+  color: var(--verde);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+  margin-left: 8px;
+  vertical-align: middle;
+  animation: pulsoBadge 2s ease-in-out infinite;
 }
 
-.fecha{
-font-size:22px;
-font-weight:bold;
+.ultima-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--verde);
+  display: inline-block;
+  flex-shrink: 0;
 }
 
-.jugadores{
-color:#aaa;
-margin-top:5px;
+@keyframes pulsoBadge {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 
-footer{
-text-align:center;
-padding:20px;
-color:#777;
-margin-top:40px;
+/* ═══════════════════════════════════════
+   SKELETON LOADING
+═══════════════════════════════════════ */
+
+.partida-skeleton {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  overflow: hidden;
+  height: 90px;
+}
+
+.sk-img {
+  width: 110px;
+  height: 90px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.sk-lines {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sk-line {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.sk-line.corta { width: 55%; animation-delay: 0.1s; }
+
+.sk-badge {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  margin-right: 20px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.partida img.loaded { animation: imgFadeIn 0.4s ease; }
+@keyframes imgFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+/* CANVAS CASINO */
+
+#canvas-lock, #canvas-hero {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#lock-screen > *:not(#canvas-lock) { position: relative; z-index: 1; }
+.hero > *:not(#canvas-hero) { position: relative; z-index: 1; }
+
+
+/* RESPONSIVE MÓVIL */
+
+@media (max-width: 480px) {
+  .lock-card { padding: 36px 24px 32px; }
+  .lock-titulo { font-size: 22px; }
+
+  .hero-stats { gap: 28px; margin-top: 36px; }
+  .stat-num { font-size: 22px; }
+
+  .partida {
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: auto auto;
+  }
+  .partida img { width: 80px; height: 80px; grid-row: 1 / 3; }
+  .partida-equipo {
+    grid-column: 2;
+    padding: 0 16px 14px;
+    font-size: 10px;
+  }
+  .partida-info { padding: 14px 16px 4px; }
+  .partida-fecha { font-size: 16px; }
+  .seccion { padding: 60px 16px; }
 }
 
 </style>
-
 </head>
-
 <body>
 
 
-<!-- PORTADA -->
+<!-- ═══ PANTALLA CONTRASEÑA ═══ -->
 
-<section class="portada">
+<div id="lock-screen">
+  <canvas id="canvas-lock"></canvas>
+  <div class="lock-glow"></div>
+  <div class="lock-card">
+    <div class="lock-icono">🃏</div>
+    <div class="lock-titulo">Club del Truco</div>
+    <div class="lock-sub">Ingresá la contraseña para continuar</div>
 
+    <div class="input-wrap">
+      <input type="password" id="clave" placeholder="Contraseña"
+        autocomplete="current-password"
+        onkeydown="if(event.key==='Enter') entrar()">
+      <button class="ojo-btn" id="ojo-btn" onclick="toggleOjo()" type="button" aria-label="Mostrar contraseña">👁</button>
+    </div>
 
-<div class="titulo">
-PARTIDAS DE TRUCO 🃏
-</div>
+    <button class="btn-entrar" onclick="entrar()">Entrar</button>
+    <div class="error-msg" id="error-msg">Contraseña incorrecta. Intentá de nuevo.</div>
 
-<div class="sub">
-Historial oficial
-</div>
-
-<a href="#partidas" class="boton">
-Explorar partidas ↓
-</a>
-
-</section>
-
-
-
-
-<!-- PARTIDAS -->
-
-<section id="partidas">
-
-<div class="contenedor">
-
-<div class="tituloSeccion">
-Historial
+    <div class="lock-footer">Acceso privado · Club del Truco</div>
+  </div>
 </div>
 
 
+<!-- ═══ CONTENIDO ═══ -->
 
-<div class="partida">
-<img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z">
-<div class="info">
-<div class="fecha">24/07/2024</div>
-<div class="jugadores">Pablo y Luca</div>
-</div>
-</div>
+<div id="contenido">
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="canvas-hero"></canvas>
+    <div class="hero-noise"></div>
+    <div class="hero-linea"></div>
+
+    <div class="hero-badge">🃏 Historial oficial</div>
+
+    <h1 class="hero-titulo">
+      CLUB DEL
+      <span>TRUCO</span>
+    </h1>
+
+    <p class="hero-desc">
+      Registro de todas las partidas jugadas.<br>Honor, gloria y algún que otro truco cantado.
+    </p>
+
+    <a href="#partidas" class="hero-btn">
+      Ver partidas
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">8</div>
+        <div class="stat-lbl">Partidas</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-lbl">Jugadores</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2</div>
+        <div class="stat-lbl">Equipos</div>
+      </div>
+    </div>
+
+    <div class="hero-divider"></div>
+  </section>
 
 
-<div class="partida">
-<img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56">
-<div class="info">
-<div class="fecha">03/01/2025</div>
-<div class="jugadores">Eze y Gio</div>
-</div>
-</div>
+  <!-- HISTORIAL -->
+  <section id="partidas">
+    <div class="seccion">
+
+      <div class="seccion-header">
+        <h2 class="seccion-titulo">Historial</h2>
+        <span class="seccion-count" id="conteo">8 partidas</span>
+      </div>
+
+      <!-- PANEL ESTADÍSTICAS -->
+      <div class="stats-panel">
+        <div class="stats-panel-titulo">📊 Marcador global</div>
+        <div style="text-align:center; margin-bottom:4px;">
+          <span class="empate-badge">⚖️ Empate técnico</span>
+        </div>
+        <div class="marcador">
+          <div class="marcador-equipo">
+            <div class="marcador-nombre">Pablo & Luca</div>
+            <div class="marcador-puntos pl">4</div>
+          </div>
+          <div class="marcador-vs">VS</div>
+          <div class="marcador-equipo">
+            <div class="marcador-nombre">Eze & Gio</div>
+            <div class="marcador-puntos eg">4</div>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-item-val">8</div>
+            <div class="stat-item-lbl">Total partidas</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item-val">27 Feb</div>
+            <div class="stat-item-lbl">Última partida</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item-val" style="color:var(--acento)">P&L ×3</div>
+            <div class="stat-item-lbl">Racha máx.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filtros">
+        <button class="filtro-btn activo" onclick="filtrar('todos', this)">Todos</button>
+        <button class="filtro-btn" onclick="filtrar('pablo-luca', this)">Pablo & Luca</button>
+        <button class="filtro-btn" onclick="filtrar('eze-gio', this)">Eze & Gio</button>
+        <button class="filtro-btn" onclick="filtrar('2024', this)">2024</button>
+        <button class="filtro-btn" onclick="filtrar('2025', this)">2025</button>
+        <button class="filtro-btn" onclick="filtrar('2026', this)">2026</button>
+      </div>
+
+      <div class="lista-partidas" id="lista">
+
+        <div class="año-label" data-año="2024">2024</div>
+
+        <div class="partida" data-equipo="pablo-luca" data-año="2024" style="animation-delay:0.05s">
+          <img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z" alt="Partida" loading="lazy">
+          <div class="partida-info">
+            <div class="partida-fecha">24 Jul 2024</div>
+            <div class="partida-jugadores">Pablo y Luca</div>
+          </div>
+          <div class="partida-equipo equipo-pl">P&L</div>
+        </div>
+
+        <div class="año-label" data-año="2025">2025</div>
+
+        <div class="partida" data-equipo="eze-gio" data-año="2025" style="animation-delay:0.1s">
+          <img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56" alt="Partida" loading="lazy">
+          <div class="partida-info">
+            <div class="partida-fecha">03 Ene 2025</div>
+            <div class="partida-jugadores">Eze y Gio</div>
+          </div>
+          <div class="partida-equipo equipo-eg">E&G</div>
+        </div>
+
+        <div class="partida" data-equipo="eze-gio" data-año="2025" style="animation-delay:0.15s">
+          <img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56" alt="Partida" loading="lazy">
+          <div class="partida-info">
+            <div class="partida-fecha">02 Feb 2025</div>
+            <div class="partida-jugadores">Eze y Gio</div>
+          </div>
+          <div class="partida-equipo equipo-eg">E&G</div>
+        </div>
+
+        <div class="partida" data-equipo="pablo-luca" data-año="2025" style="animation-delay:0.2s">
+          <img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z" alt="Partida" loading="lazy">
+          <div class="partida-info">
+            <div class="partida-fecha">06 Ago 2025</div>
+            <div class="partida-jugadores">Pablo y Luca</div>
+          </div>
+          <div class="partida-equipo equipo-pl">P&L</div>
+        </div>
+
+        <div class="partida" data-equipo="pablo-luca" data-año="2025" style="animation-delay:0.22s">
+          <img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z" alt="Partida" loading="lazy">
+          <div class="partida-info">
+            <div class="partida-fecha">06 Ago 2025</div>
+            <div class="partida-jugadores">Pablo y Luca</div>
+          </div>
+          <div class="partida-equipo equipo-pl">P&L</div>
+        </div>
+
+        <div class="partida" data-equipo="pablo-luca" data-año="2025" style="animation-delay:0.25s">
+          <img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z" alt="Partida" loading="lazy">
+          <div class="partida-info">
+            <div class="partida-fecha">15 Ago 2025</div>
+            <div class="partida-jugadores">Pablo y Luca</div>
+          </div>
+          <div class="partida-equipo equipo-pl">P&L</div>
+        </div>
+
+        <div class="año-label" data-año="2026">2026</div>
+
+        <div class="partida" data-equipo="eze-gio" data-año="2026" style="animation-delay:0.3s">
+          <img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56" alt="Partida" loading="lazy">
+          <div class="partida-info">
+            <div class="partida-fecha">13 Ene 2026</div>
+            <div class="partida-jugadores">Eze y Gio</div>
+          </div>
+          <div class="partida-equipo equipo-eg">E&G</div>
+        </div>
+
+        <div class="partida" data-equipo="eze-gio" data-año="2026" style="animation-delay:0.35s">
+          <img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56" alt="Partida" loading="lazy">
+          <div class="partida-info">
+            <div class="partida-fecha">27 Feb 2026 <span class="ultima-badge">Última</span></div>
+            <div class="partida-jugadores">Eze y Gio</div>
+          </div>
+          <div class="partida-equipo equipo-eg">E&G</div>
+        </div>
+
+      </div><!-- /lista -->
+
+    </div>
+  </section>
+
+  <footer>
+    Club del Truco <span>©</span> 2026
+  </footer>
+
+</div><!-- /contenido -->
 
 
-<div class="partida">
-<img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56">
-<div class="info">
-<div class="fecha">02/02/2025</div>
-<div class="jugadores">Eze y Gio</div>
-</div>
-</div>
+<script>
+
+// ── CANVAS CASINO ──
+(function() {
+
+  // Símbolos de cartas del truco argentino
+  const SUITS = ['♠','♥','♦','♣'];
+  const VALS  = ['1','2','3','4','5','6','7','10','11','12'];
+
+  function randomCard() {
+    return VALS[Math.floor(Math.random()*VALS.length)] + ' ' + SUITS[Math.floor(Math.random()*SUITS.length)];
+  }
+
+  // ─── Clase partícula ───────────────────────────────────────────────
+  class Particle {
+    constructor(W, H, type) {
+      this.W = W; this.H = H;
+      this.type = type; // 'card' | 'chip' | 'star'
+      this.reset(true);
+    }
+
+    reset(init) {
+      this.x = Math.random() * this.W;
+      this.y = init ? Math.random() * this.H : -60;
+      this.size = this.type === 'card' ? (22 + Math.random()*18) : (7 + Math.random()*9);
+      this.speedY = 0.5 + Math.random() * 0.9;
+      this.speedX = (Math.random() - 0.5) * 0.6;
+      this.rot = Math.random() * Math.PI * 2;
+      this.rotSpeed = (Math.random() - 0.5) * 0.022;
+      this.alpha = 0.28 + Math.random() * 0.32;
+      this.label = randomCard();
+
+      // Colores casino: verde, dorado, rojo, blanco
+      const paleta = [
+        'rgba(46,204,113,A)',
+        'rgba(240,192,64,A)',
+        'rgba(220,60,60,A)',
+        'rgba(255,255,255,A)',
+      ];
+      this.color = paleta[Math.floor(Math.random()*paleta.length)].replace('A', this.alpha);
+      this.colorSolid = this.color.replace(/[\d.]+\)$/, '1)');
+    }
+
+    update() {
+      this.y += this.speedY;
+      this.x += this.speedX;
+      this.rot += this.rotSpeed;
+      if (this.y > this.H + 60) this.reset(false);
+    }
+
+    draw(ctx) {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rot);
+      ctx.globalAlpha = this.alpha;
+
+      if (this.type === 'card') {
+        const w = this.size * 1.4, h = this.size * 2;
+        // Carta
+        ctx.fillStyle = 'rgba(20,20,20,0.7)';
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(-w/2, -h/2, w, h, 3);
+        ctx.fill();
+        ctx.stroke();
+        // Texto
+        ctx.fillStyle = this.colorSolid;
+        ctx.font = `bold ${this.size * 0.55}px serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(this.label, 0, 0);
+      } else if (this.type === 'chip') {
+        // Ficha de casino
+        ctx.beginPath();
+        ctx.arc(0, 0, this.size, 0, Math.PI*2);
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        // Borde interior
+        ctx.beginPath();
+        ctx.arc(0, 0, this.size * 0.7, 0, Math.PI*2);
+        ctx.stroke();
+        // Punto central
+        ctx.beginPath();
+        ctx.arc(0, 0, this.size * 0.2, 0, Math.PI*2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      } else {
+        // Estrella / destellos dorados
+        ctx.fillStyle = 'rgba(240,192,64,' + this.alpha + ')';
+        for (let i = 0; i < 4; i++) {
+          ctx.save();
+          ctx.rotate(i * Math.PI / 2);
+          ctx.beginPath();
+          ctx.moveTo(0, -this.size);
+          ctx.lineTo(this.size*0.15, -this.size*0.15);
+          ctx.lineTo(this.size, 0);
+          ctx.lineTo(this.size*0.15, this.size*0.15);
+          ctx.lineTo(0, this.size);
+          ctx.lineTo(-this.size*0.15, this.size*0.15);
+          ctx.lineTo(-this.size, 0);
+          ctx.lineTo(-this.size*0.15, -this.size*0.15);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      ctx.restore();
+    }
+  }
+
+  // ─── Inicializar un canvas ──────────────────────────────────────────
+  function initCanvas(id) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      if (id === 'canvas-lock') {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      } else {
+        const parent = canvas.parentElement;
+        canvas.width  = parent.offsetWidth  || window.innerWidth;
+        canvas.height = parent.offsetHeight || window.innerHeight;
+      }
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const N_CARDS = 18, N_CHIPS = 14, N_STARS = 10;
+    const particles = [];
+
+    for (let i = 0; i < N_CARDS; i++)
+      particles.push(new Particle(canvas.width, canvas.height, 'card'));
+    for (let i = 0; i < N_CHIPS; i++)
+      particles.push(new Particle(canvas.width, canvas.height, 'chip'));
+    for (let i = 0; i < N_STARS; i++)
+      particles.push(new Particle(canvas.width, canvas.height, 'star'));
+
+    function loop() {
+      // Actualizar dimensiones por si cambió el canvas
+      particles.forEach(p => { p.W = canvas.width; p.H = canvas.height; });
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(p => {
+        p.update();
+        p.draw(ctx);
+      });
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  }
+
+  // Iniciar ambos canvas
+  initCanvas('canvas-lock');
+  // El del hero se inicia cuando el contenido se hace visible
+  const observer = new MutationObserver(() => {
+    if (document.getElementById('contenido').classList.contains('visible')) {
+      initCanvas('canvas-hero');
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.getElementById('contenido'), { attributes: true });
+
+})();
 
 
-<div class="partida">
-<img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z">
-<div class="info">
-<div class="fecha">06/08/2025</div>
-<div class="jugadores">Pablo y Luca</div>
-</div>
-</div>
+// ── SKELETON LOADING — fade-in de imágenes ──
+(function() {
+  const imgs = document.querySelectorAll('.partida img');
+  imgs.forEach(img => {
+    img.style.opacity = '0';
+    img.style.transition = 'opacity 0.4s ease';
+    const onLoad = () => { img.style.opacity = '1'; img.classList.add('loaded'); };
+    img.addEventListener('load', onLoad);
+    if (img.complete && img.naturalWidth) onLoad();
+  });
+})();
+
+// ── SONIDO HOVER CARTAS (Web Audio API) ──
+let audioCtx = null;
+
+function sonidoCarta() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.06);
+    gain.gain.setValueAtTime(0.07, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.09);
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + 0.1);
+  } catch(e) {}
+}
+
+document.querySelectorAll('.partida').forEach(card => {
+  card.style.cursor = 'pointer';
+  card.addEventListener('mouseenter', sonidoCarta);
+  card.addEventListener('touchstart', sonidoCarta, { passive: true });
+});
 
 
-<div class="partida">
-<img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z">
-<div class="info">
-<div class="fecha">06/08/2025</div>
-<div class="jugadores">Pablo y Luca</div>
-</div>
-</div>
-<div class="partida">
-<img src="https://lh3.googleusercontent.com/d/1HrZX-6FdS_1W-_LPt6V4f_MGghoaK16z">
-<div class="info">
-<div class="fecha">15/08/2025</div>
-<div class="jugadores">Pablo y Luca</div>
-</div>
-</div>
-<div class="partida">
-<img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56">
-<div class="info">
-<div class="fecha">13/01/2026</div>
-<div class="jugadores">Eze y Gio</div>
-</div>
-</div>
-<div class="partida">
-<img src="https://lh3.googleusercontent.com/d/1iJd_aiwlFTCJctKMh_UB1meJa3SQpv56">
-<div class="info">
-<div class="fecha">27/02/2026</div>
-<div class="jugadores">Eze y Gio</div>
-</div>
-</div>
-</div>
-</section>
-<footer>
-Club del Truco © 2026
-</footer>
+function entrar() {
+  const clave = document.getElementById('clave').value;
+  const errorMsg = document.getElementById('error-msg');
+
+  if (clave === 'truco123') {
+    document.getElementById('lock-screen').classList.add('salir');
+    setTimeout(() => {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('contenido').classList.add('visible');
+    }, 600);
+  } else {
+    errorMsg.classList.add('visible');
+    document.getElementById('clave').style.borderColor = '#e74c3c';
+    setTimeout(() => {
+      errorMsg.classList.remove('visible');
+      document.getElementById('clave').style.borderColor = '';
+    }, 2800);
+  }
+}
+
+function toggleOjo() {
+  const input = document.getElementById('clave');
+  const btn = document.getElementById('ojo-btn');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+
+// ── FILTROS ──
+function filtrar(criterio, btn) {
+  document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('activo'));
+  btn.classList.add('activo');
+
+  const partidas = document.querySelectorAll('.partida');
+  const labels = document.querySelectorAll('.año-label');
+  let visible = 0;
+
+  partidas.forEach(p => {
+    const equipo = p.dataset.equipo;
+    const año = p.dataset.año;
+    const mostrar = criterio === 'todos' || equipo === criterio || año === criterio;
+    p.style.display = mostrar ? '' : 'none';
+    if (mostrar) visible++;
+  });
+
+  // Ocultar labels de año sin partidas visibles debajo
+  labels.forEach(lbl => {
+    const añoLabel = lbl.dataset.año;
+    const tieneVisible = [...partidas].some(p =>
+      p.dataset.año === añoLabel && p.style.display !== 'none'
+    );
+    lbl.style.display = tieneVisible ? '' : 'none';
+  });
+
+  document.getElementById('conteo').textContent = visible + ' partida' + (visible !== 1 ? 's' : '');
+}
+
+</script>
 </body>
 </html>
-
-
-
