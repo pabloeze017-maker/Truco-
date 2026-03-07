@@ -768,7 +768,7 @@ footer span { color: var(--verde); }
 <body>
 
 
-<!-- ═══ PANTALLA CONTRASEÑA ═══ -->
+<!-- ═══ PANTALLA ENTRADA ═══ -->
 
 <div id="lock-screen">
   <canvas id="canvas-lock"></canvas>
@@ -776,19 +776,9 @@ footer span { color: var(--verde); }
   <div class="lock-card">
     <div class="lock-icono">🃏</div>
     <div class="lock-titulo">Club del Truco</div>
-    <div class="lock-sub">Ingresá la contraseña para continuar</div>
-
-    <div class="input-wrap">
-      <input type="password" id="clave" placeholder="Contraseña"
-        autocomplete="current-password"
-        onkeydown="if(event.key==='Enter') entrar()">
-      <button class="ojo-btn" id="ojo-btn" onclick="toggleOjo()" type="button" aria-label="Mostrar contraseña">👁</button>
-    </div>
-
-    <button class="btn-entrar" onclick="entrar()">Entrar</button>
-    <div class="error-msg" id="error-msg">Contraseña incorrecta. Intentá de nuevo.</div>
-
-    <div class="lock-footer">Acceso privado · Club del Truco</div>
+    <div class="lock-sub">Historial oficial de partidas</div>
+    <button class="btn-entrar" onclick="entrar()">Entrar al club</button>
+    <div class="lock-footer">Club del Truco · 2026</div>
   </div>
 </div>
 
@@ -1194,35 +1184,11 @@ document.querySelectorAll('.partida').forEach(card => {
 
 
 function entrar() {
-  const clave = document.getElementById('clave').value;
-  const errorMsg = document.getElementById('error-msg');
-
-  if (clave === 'truco123') {
-    document.getElementById('lock-screen').classList.add('salir');
-    setTimeout(() => {
-      document.getElementById('lock-screen').style.display = 'none';
-      document.getElementById('contenido').classList.add('visible');
-    }, 600);
-  } else {
-    errorMsg.classList.add('visible');
-    document.getElementById('clave').style.borderColor = '#e74c3c';
-    setTimeout(() => {
-      errorMsg.classList.remove('visible');
-      document.getElementById('clave').style.borderColor = '';
-    }, 2800);
-  }
-}
-
-function toggleOjo() {
-  const input = document.getElementById('clave');
-  const btn = document.getElementById('ojo-btn');
-  if (input.type === 'password') {
-    input.type = 'text';
-    btn.textContent = '🙈';
-  } else {
-    input.type = 'password';
-    btn.textContent = '👁';
-  }
+  document.getElementById('lock-screen').classList.add('salir');
+  setTimeout(() => {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('contenido').classList.add('visible');
+  }, 600);
 }
 
 // ── FILTROS ──
