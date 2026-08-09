@@ -4,25 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Club del Truco · Historial</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,900&display=swap" rel="stylesheet">
 <style>
 
-/* ════════════════════════════════════════
-   BASE
-════════════════════════════════════════ */
 :root {
   --bg:        #0c0c0e;
   --surface:   #141416;
   --surface2:  #1a1a1e;
   --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
   --text:      #f0f0f2;
   --text-dim:  #72727a;
-  --text-muted:#404048;
-  --eg:        #c0392b;     /* red  – Eze & Gio */
-  --eg-soft:   rgba(192,57,43,0.18);
-  --pl:        #3a6dc0;     /* blue – Pablo & Luca */
-  --pl-soft:   rgba(58,109,192,0.18);
-  --gold:      #c8a555;
+  --text-muted:#3a3a42;
+  --eg:        #c0392b;
+  --eg-soft:   rgba(192,57,43,0.15);
+  --pl:        #3a6dc0;
+  --pl-soft:   rgba(58,109,192,0.15);
+  --gold:      #f1c40f;
+  --gold-soft: rgba(241,196,15,0.15);
   --radius:    14px;
   --radius-sm: 10px;
 }
@@ -35,366 +34,257 @@ body{
   color:var(--text);
   min-height:100vh;
   overflow-x:hidden;
-  padding-bottom:90px;
   -webkit-font-smoothing:antialiased;
 }
 a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
 
-/* ════════════════════════════════════════
-   HEADER
-════════════════════════════════════════ */
+.section{
+  display:none;
+  padding-bottom:90px;
+  animation:fadeSection .35s ease both;
+}
+.section.active{display:block}
+@keyframes fadeSection{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
 .app-header{
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:52px 20px 16px;
-  position:relative;
 }
 .hdr-icon{color:var(--text-dim);display:flex}
 .hdr-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .hdr-center{text-align:center;flex:1}
 .hdr-title{font-size:15px;font-weight:700;letter-spacing:3px;text-transform:uppercase}
 .hdr-sub{font-size:10px;letter-spacing:2px;color:var(--text-dim);font-weight:500;text-transform:uppercase;margin-top:2px}
-.hdr-menu{color:var(--text-dim);cursor:pointer;display:flex;flex-direction:column;gap:3px;padding:4px}
+.hdr-right{color:var(--text-dim);cursor:pointer;display:flex;flex-direction:column;gap:3px;padding:4px}
 .hdr-dot{width:4px;height:4px;border-radius:50%;background:currentColor}
 
-/* ════════════════════════════════════════
-   HERO BANNER VS
-════════════════════════════════════════ */
-.hero{
-  position:relative;
-  height:220px;
-  overflow:hidden;
-  margin:0 0 0;
-}
-
-/* left half */
-.hero-half{
-  position:absolute;
-  top:0;bottom:0;
-  width:100%;
-  overflow:hidden;
-}
-.hero-half.left{
-  left:0;
-  clip-path: polygon(0 0, calc(50% + 30px) 0, calc(50% - 30px) 100%, 0 100%);
-}
-.hero-half.right{
-  right:0;
-  clip-path: polygon(calc(50% + 30px) 0, 100% 0, 100% 100%, calc(50% - 30px) 100%);
-}
-
-.hero-half img{
-  position:absolute;
-  top:0;left:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  object-position:top center;
-}
-
-/* gradient overlays */
-.hero-half.left img  {filter:brightness(0.55) saturate(0.7)}
-.hero-half.right img {filter:brightness(0.55) saturate(0.7)}
-
-/* tint overlay per side */
-.hero-half.left::after{
-  content:'';
-  position:absolute;inset:0;
-  background:linear-gradient(90deg,rgba(192,57,43,0.28) 0%,transparent 80%);
-}
-.hero-half.right::after{
-  content:'';
-  position:absolute;inset:0;
-  background:linear-gradient(270deg,rgba(58,109,192,0.28) 0%,transparent 80%);
-}
-
-/* center split */
-.hero-vs{
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  z-index:11;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:16px;
-}
-.hero-vs-text{
-  font-family: 'Playfair Display', serif;
-  font-size:42px;
-  font-weight:400;
-  color:#fff;
-  text-shadow:0 2px 20px rgba(0,0,0,0.7);
-}
-.hero-vs-text.v { margin-top: -30px; }
-.hero-vs-text.s { margin-top: 30px; }
-
-.hero-vs-line{
-  position:absolute;
-  top:-20px;bottom:-20px;
-  left:50%;
-  width:1.5px;
-  background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.6),transparent);
-  z-index:10;
-  transform:translateX(-50%) rotate(15deg);
-}
-
-/* bottom gradient to blend into bg */
-.hero::after{
-  content:'';
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:80px;
-  background:linear-gradient(to top,var(--bg),transparent);
-  z-index:9;
-  pointer-events:none;
-}
-
-/* team labels */
-.hero-labels{
-  position:absolute;
-  bottom:0;left:0;right:0;
-  display:flex;
-  justify-content:space-between;
-  padding:0 16px 14px;
-  z-index:11;
-}
-.hero-label{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-}
+.hero{position:relative;height:220px;overflow:hidden}
+.hero-half{position:absolute;top:0;bottom:0;width:100%;overflow:hidden}
+.hero-half.left{left:0;clip-path:polygon(0 0,calc(50% + 30px) 0,calc(50% - 30px) 100%,0 100%)}
+.hero-half.right{right:0;clip-path:polygon(calc(50% + 30px) 0,100% 0,100% 100%,calc(50% - 30px) 100%)}
+.hero-half img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:top center}
+.hero-half.left img{filter:brightness(0.55) saturate(0.7)}
+.hero-half.right img{filter:brightness(0.55) saturate(0.7)}
+.hero-half.left::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(192,57,43,0.28) 0%,transparent 80%)}
+.hero-half.right::after{content:'';position:absolute;inset:0;background:linear-gradient(270deg,rgba(58,109,192,0.28) 0%,transparent 80%)}
+.hero-vs{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:11;display:flex;align-items:center;justify-content:center;gap:16px}
+.hero-vs-text{font-family:'Playfair Display',serif;font-size:42px;font-weight:400;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,0.7)}
+.hero-vs-text.v{margin-top:-30px}
+.hero-vs-text.s{margin-top:30px}
+.hero-vs-line{position:absolute;top:-20px;bottom:-20px;left:50%;width:1.5px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.6),transparent);z-index:10;transform:translateX(-50%) rotate(15deg)}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,var(--bg),transparent);z-index:9;pointer-events:none}
+.hero-labels{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;padding:0 16px 14px;z-index:11}
+.hero-label{display:flex;flex-direction:column;gap:2px}
 .hero-label.right{align-items:flex-end;text-align:right}
-.hero-label-name{
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-  color:#fff;
-  text-shadow:0 1px 6px rgba(0,0,0,0.8);
-}
-.hero-label-tag{
-  font-size:9px;
-  font-weight:600;
-  letter-spacing:2px;
-  text-transform:uppercase;
-}
+.hero-label-name{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,0.8)}
+.hero-label-tag{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
 .hero-label.left  .hero-label-tag{color:var(--eg)}
 .hero-label.right .hero-label-tag{color:var(--pl)}
 
-/* ════════════════════════════════════════
-   RESUMEN GENERAL
-════════════════════════════════════════ */
 .resumen-wrap{padding:4px 20px 0;max-width:540px;margin:0 auto}
-
-.resumen-label{
-  text-align:center;
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  color:var(--text-muted);
-  margin-bottom:18px;
-}
-
-.resumen-row{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:0;
-}
-
-.resumen-team{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-}
-
-.resumen-wins{
-  font-size:52px;
-  font-weight:800;
-  line-height:1;
-  letter-spacing:-2px;
-}
+.resumen-label{text-align:center;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:18px}
+.resumen-row{display:flex;align-items:center;justify-content:center;gap:0}
+.resumen-team{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.resumen-wins{font-size:52px;font-weight:800;line-height:1;letter-spacing:-2px}
 .resumen-wins.eg{color:var(--eg)}
 .resumen-wins.pl{color:var(--pl)}
-
-.resumen-wins-label{
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:2.5px;
-  text-transform:uppercase;
-  color:var(--text-dim);
-}
-
-/* circular total */
-.resumen-circle{
-  flex-shrink:0;
-  width:88px;
-  height:88px;
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  margin:0 12px;
-}
-.resumen-circle svg{
-  position:absolute;
-  inset:0;
-  width:100%;height:100%;
-  transform:rotate(-90deg);
-}
+.resumen-wins-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-dim)}
+.resumen-circle{flex-shrink:0;width:88px;height:88px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 12px}
+.resumen-circle svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
 .circle-bg{fill:none;stroke:var(--surface2);stroke-width:4}
-.circle-eg{fill:none;stroke:var(--eg);stroke-width:4;stroke-linecap:round;
-  stroke-dasharray:200;stroke-dashoffset:74} /* 60% = 10 partidas, 6/10 = 60% → dashoffset 200*(1-0.6)=80 */
-.circle-pl{fill:none;stroke:var(--pl);stroke-width:4;stroke-linecap:round;
-  stroke-dasharray:200;stroke-dashoffset:0;opacity:0} /* just bg */
-
 .resumen-circle-inner{position:relative;z-index:1;text-align:center}
 .circle-num{font-size:26px;font-weight:800;line-height:1;letter-spacing:-1px}
 .circle-sub{font-size:7.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);line-height:1.3;margin-top:2px}
+.section-divider{border:none;height:1px;background:var(--border);margin:24px auto 0;max-width:500px}
 
-/* divider */
-.section-divider{
-  border:none;
-  height:1px;
-  background:var(--border);
-  margin:24px 20px 0;
-  max-width:500px;
-  margin-left:auto;
-  margin-right:auto;
-}
-
-/* ════════════════════════════════════════
-   HISTORIAL DE PARTIDAS
-════════════════════════════════════════ */
 .hist-wrap{padding:0 16px;max-width:540px;margin:0 auto}
-
-.hist-label{
-  text-align:center;
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  color:var(--text-muted);
-  padding:20px 0 14px;
-}
-
+.hist-label{text-align:center;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);padding:20px 0 14px}
 .hist-list{display:flex;flex-direction:column;gap:8px}
+.hist-row{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;gap:16px;position:relative;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.2);animation:slideIn .45s ease both;cursor:pointer;transition:transform .18s,box-shadow .18s}
+.hist-row:active{transform:scale(0.985)}
+.hist-row::before{content:'';position:absolute;inset:0;opacity:0.12;pointer-events:none}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.hist-row.eg-row{border-left:1px solid rgba(192,57,43,0.6)}
+.hist-row.eg-row::before{background:linear-gradient(90deg,var(--eg) 0%,transparent 50%)}
+.hist-row.pl-row{border-left:1px solid rgba(58,109,192,0.6)}
+.hist-row.pl-row::before{background:linear-gradient(90deg,var(--pl) 0%,transparent 50%)}
 
-.hist-row{
-  display:flex;
-  align-items:center;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius-sm);
-  padding:14px 16px;
-  gap:16px;
-  position:relative;
-  overflow:hidden;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-  animation:slideIn .45s ease both;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
+.hist-row.special-row{border:1px solid rgba(241,196,15,0.4);border-left:2px solid var(--gold);box-shadow:0 4px 20px rgba(241,196,15,0.15)}
+.hist-row.special-row::before{background:linear-gradient(90deg,rgba(241,196,15,0.2) 0%,rgba(192,57,43,0.15) 60%,transparent 100%);opacity:0.25}
 
-.hist-row::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  opacity:0.12;
-  pointer-events:none;
-}
-
-@keyframes slideIn{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-/* premium accent */
-.hist-row.eg-row{
-  border-left:1px solid rgba(192,57,43,0.6);
-}
-.hist-row.eg-row::before{
-  background:linear-gradient(90deg, var(--eg) 0%, transparent 50%);
-}
-
-.hist-row.pl-row{
-  border-left:1px solid rgba(58,109,192,0.6);
-}
-.hist-row.pl-row::before{
-  background:linear-gradient(90deg, var(--pl) 0%, transparent 50%);
-}
-
-.hist-num{
-  font-size:15px;
-  font-weight:700;
-  color:var(--text-muted);
-  min-width:24px;
-  flex-shrink:0;
-  line-height:1;
-}
-
-.hist-date{
-  font-size:11px;
-  color:var(--text-dim);
-  font-weight:400;
-  min-width:62px;
-  flex-shrink:0;
-}
-
+.hist-num{font-size:15px;font-weight:700;color:var(--text-muted);min-width:24px;flex-shrink:0;line-height:1}
+.hist-date{font-size:11px;color:var(--text-dim);font-weight:400;min-width:62px;flex-shrink:0}
 .hist-mid{flex:1;min-width:0}
-
-.hist-team{
-  font-size:12px;
-  font-weight:700;
-  letter-spacing:0.5px;
-}
+.hist-team{font-size:12px;font-weight:700;letter-spacing:0.5px}
 .hist-team.eg{color:var(--eg)}
 .hist-team.pl{color:var(--pl)}
+.hist-won{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:2px}
+.hist-tag-special{display:inline-flex;align-items:center;gap:3px;font-size:8.5px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--gold);background:rgba(241,196,15,0.12);border:1px solid rgba(241,196,15,0.3);padding:2px 6px;border-radius:4px;margin-top:4px}
 
-.hist-won{
-  font-size:9px;
-  font-weight:600;
+.hist-score{font-size:15px;font-weight:700;color:var(--text);flex-shrink:0;letter-spacing:-0.3px}
+.hist-arrow{color:var(--text-muted);flex-shrink:0;display:flex}
+.hist-arrow svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.modal-backdrop{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.75);
+  z-index:200;
+  display:flex;
+  align-items:flex-end;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s;
+  backdrop-filter:blur(8px);
+}
+.modal-backdrop.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:24px 24px 0 0;
+  width:100%;
+  max-width:540px;
+  margin:0 auto;
+  padding:28px 24px 48px;
+  transform:translateY(40px);
+  transition:transform .28s cubic-bezier(.22,1,.36,1);
+}
+.modal-backdrop.open .modal{transform:translateY(0)}
+.modal-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 28px}
+.modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+.modal-num{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted)}
+.modal-date{font-size:13px;font-weight:500;color:var(--text-dim);margin-top:3px}
+.modal-badge{padding:5px 12px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.modal-badge.eg{background:var(--eg-soft);color:var(--eg)}
+.modal-badge.pl{background:var(--pl-soft);color:var(--pl)}
+
+.modal-special-banner{
+  background:linear-gradient(135deg,rgba(241,196,15,0.18),rgba(192,57,43,0.15));
+  border:1px solid rgba(241,196,15,0.4);
+  border-radius:var(--radius-sm);
+  padding:10px 14px;
+  margin-bottom:16px;
+  text-align:center;
+  font-size:11px;
+  font-weight:800;
   letter-spacing:1.5px;
+  color:var(--gold);
   text-transform:uppercase;
-  color:var(--text-muted);
-  margin-top:2px;
+  display:none;
 }
+.modal-special-banner.show{display:block}
 
-.hist-score{
-  font-size:15px;
-  font-weight:700;
-  color:var(--text);
-  flex-shrink:0;
-  letter-spacing:-0.3px;
-}
+.modal-score-row{display:flex;align-items:center;justify-content:center;gap:20px;margin:8px 0 24px;padding:28px 20px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border)}
+.modal-score-block{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+.modal-score-team{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.modal-score-team.eg{color:var(--eg)}
+.modal-score-team.pl{color:var(--pl)}
+.modal-score-num{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;line-height:1}
+.modal-score-num.winner{color:var(--text)}
+.modal-score-num.loser{color:var(--text-muted)}
+.modal-score-vs{font-size:14px;font-weight:300;color:var(--text-muted);letter-spacing:2px}
+.modal-winner-tag{text-align:center;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-bottom:24px}
+.modal-winner-tag span{font-weight:800}
+.modal-winner-tag span.eg{color:var(--eg)}
+.modal-winner-tag span.pl{color:var(--pl)}
+.modal-close{width:100%;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-dim);font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;font-family:inherit;cursor:pointer;margin-top:8px}
 
-.hist-arrow{
-  color:var(--text-muted);
-  flex-shrink:0;
-  display:flex;
-}
-.hist-arrow svg{
-  width:14px;height:14px;
-  fill:none;stroke:currentColor;
-  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
-}
+.page-header{padding:52px 20px 20px;max-width:540px;margin:0 auto}
+.page-title{font-size:24px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px}
+.page-sub{font-size:12px;color:var(--text-dim);font-weight:400;letter-spacing:0.3px}
 
-/* ════════════════════════════════════════
-   BOTTOM NAV
-════════════════════════════════════════ */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;max-width:540px;margin:0 auto}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;inset:0;opacity:0.07;pointer-events:none}
+.stat-card.eg-card::before{background:linear-gradient(135deg,var(--eg),transparent 60%)}
+.stat-card.pl-card::before{background:linear-gradient(135deg,var(--pl),transparent 60%)}
+.stat-card-icon{font-size:18px;margin-bottom:10px}
+.stat-card-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
+.stat-card-value{font-size:36px;font-weight:800;line-height:1;letter-spacing:-1px}
+.stat-card-value.eg{color:var(--eg)}
+.stat-card-value.pl{color:var(--pl)}
+.stat-card-value.neutral{color:var(--text)}
+.stat-card-sub{font-size:11px;color:var(--text-dim);margin-top:4px;font-weight:400}
+.stat-card-full{grid-column:1/-1}
+
+.bar-section{padding:20px 16px 0;max-width:540px;margin:0 auto}
+.bar-section-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px}
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.bar-row-label{font-size:11px;font-weight:600;color:var(--text-dim);min-width:60px;flex-shrink:0}
+.bar-track{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.22,1,.36,1)}
+.bar-fill.eg{background:var(--eg)}
+.bar-fill.pl{background:var(--pl)}
+.bar-val{font-size:11px;font-weight:700;color:var(--text);min-width:30px;text-align:right;flex-shrink:0}
+
+.score-dist{padding:20px 16px 0;max-width:540px;margin:0 auto}
+.dist-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.dist-row:last-child{border-bottom:none}
+.dist-match{font-size:12px;color:var(--text-dim);font-weight:400}
+.dist-score{font-size:13px;font-weight:700;color:var(--text)}
+.dist-badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+.dist-badge.eg{background:var(--eg-soft);color:var(--eg)}
+.dist-badge.pl{background:var(--pl-soft);color:var(--pl)}
+
+
+.amigos-wrap{padding:0 16px;max-width:540px;margin:0 auto}
+.team-section{margin-bottom:28px}
+.team-section-title{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-muted);padding:20px 0 12px}
+
+.player-card{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;margin-bottom:10px;position:relative;overflow:hidden}
+.player-card::before{content:'';position:absolute;inset:0;opacity:0.07;pointer-events:none}
+.player-card.eg-card::before{background:linear-gradient(90deg,var(--eg),transparent 50%)}
+.player-card.pl-card::before{background:linear-gradient(90deg,var(--pl),transparent 50%)}
+
+.player-avatar-placeholder{width:52px;height:52px;border-radius:50%;flex-shrink:0;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--text-dim);background:var(--surface2);text-transform:uppercase}
+.player-info{flex:1;min-width:0}
+.player-name{font-size:16px;font-weight:700;margin-bottom:3px}
+.player-role{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+.player-role.eg{color:var(--eg)}
+.player-role.pl{color:var(--pl)}
+.player-stats{display:flex;gap:16px;margin-top:8px}
+.player-stat{display:flex;flex-direction:column;gap:2px}
+.player-stat-num{font-size:18px;font-weight:800;line-height:1;letter-spacing:-0.5px}
+.player-stat-num.eg{color:var(--eg)}
+.player-stat-num.pl{color:var(--pl)}
+.player-stat-label{font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted)}
+.team-banner{border-radius:var(--radius);overflow:hidden;margin-bottom:10px;position:relative;height:110px}
+.team-banner img{width:100%;height:100%;object-fit:cover;filter:brightness(0.5) saturate(0.7)}
+.team-banner::after{content:'';position:absolute;inset:0;opacity:0.3}
+.team-banner.eg-banner::after{background:linear-gradient(90deg,var(--eg),transparent)}
+.team-banner.pl-banner::after{background:linear-gradient(90deg,var(--pl),transparent)}
+.team-banner-info{position:absolute;bottom:14px;left:16px;z-index:2}
+.team-banner-name{font-size:18px;font-weight:800;letter-spacing:-0.3px;margin-bottom:2px}
+.team-banner-record{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6)}
+.settings-wrap{padding:0 16px;max-width:540px;margin:0 auto}
+.settings-group{margin-bottom:24px}
+.settings-group-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);padding:20px 4px 12px}
+.settings-item{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 16px;margin-bottom:8px;cursor:pointer}
+.settings-item-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.settings-item-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.settings-icon-eg{background:var(--eg-soft);color:var(--eg)}
+.settings-icon-pl{background:var(--pl-soft);color:var(--pl)}
+.settings-icon-neutral{background:var(--surface2);color:var(--text-dim)}
+.settings-item-info{flex:1}
+.settings-item-title{font-size:14px;font-weight:600;margin-bottom:2px}
+.settings-item-desc{font-size:11px;color:var(--text-dim);font-weight:400}
+.settings-arrow{color:var(--text-muted)}
+.settings-arrow svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app-info{text-align:center;padding:16px 0 8px;color:var(--text-muted)}
+.app-info-name{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.app-info-ver{font-size:11px;font-weight:400}
+
 .bottom-nav{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:rgba(12,12,14,0.95);
-  backdrop-filter:blur(20px) saturate(1.5);
-  -webkit-backdrop-filter:blur(20px) saturate(1.5);
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(12,12,14,0.96);
+  backdrop-filter:blur(24px) saturate(1.8);
+  -webkit-backdrop-filter:blur(24px) saturate(1.8);
   border-top:1px solid var(--border);
-  display:flex;
-  justify-content:space-around;
+  display:flex;justify-content:space-around;
   padding:10px 0 calc(10px + env(safe-area-inset-bottom));
   z-index:100;
 }
@@ -407,257 +297,694 @@ a{text-decoration:none;color:inherit}
 .nav-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nav-item.active .nav-icon svg{stroke-width:2.2}
 .nav-label{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
-
-/* center nav - special */
 .nav-item.center-nav{
-  background:var(--surface);
-  border-radius:50%;
-  width:48px;height:48px;
-  margin-top:-18px;
-  border:1px solid var(--border);
-  box-shadow:0 4px 20px rgba(0,0,0,0.5);
-  padding:0;
-  justify-content:center;
-  color:var(--eg);
+  background:var(--surface);border-radius:50%;
+  width:48px;height:48px;margin-top:-18px;
+  border:1px solid var(--border);box-shadow:0 4px 20px rgba(0,0,0,0.5);
+  padding:0;justify-content:center;
 }
+.nav-item.center-nav.active{color:var(--eg)}
 .nav-item.center-nav .nav-icon svg{width:22px;height:22px}
 
 ::-webkit-scrollbar{width:0}
 
-@media(max-width:380px){
-  .hero{height:190px}
-  .resumen-wins{font-size:44px}
-  .resumen-circle{width:76px;height:76px}
-  .circle-num{font-size:22px}
-}
 </style>
 </head>
 <body>
 
-<!-- ═══ HEADER ═══ -->
-<header class="app-header">
-  <div class="hdr-icon">
-    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-  </div>
-  <div class="hdr-center">
-    <div class="hdr-title">Historial</div>
-    <div class="hdr-sub">Truco entre amigos</div>
-  </div>
-  <div class="hdr-menu">
-    <div class="hdr-dot"></div>
-    <div class="hdr-dot"></div>
-    <div class="hdr-dot"></div>
-  </div>
-</header>
+<div id="sec-historial" class="section active">
 
-<!-- ═══ HERO VS BANNER ═══ -->
-<div class="hero">
-  <div class="hero-vs-line"></div>
-
-  <div class="hero-half left">
-    <img src="https://lh3.googleusercontent.com/d/1_xR0smZPEp_rdkD4U7E_P-OW6aASQMlU" alt="Eze & Gio">
-  </div>
-  <div class="hero-half right">
-    <img src="https://lh3.googleusercontent.com/d/1I6S2_zH6Ml6ey_eYi1T5WPOsrxJsS56r" alt="Pablo & Luca">
-  </div>
-
-  <div class="hero-vs">
-    <span class="hero-vs-text v">V</span>
-    <span class="hero-vs-text s">S</span>
-  </div>
-
-  <div class="hero-labels">
-    <div class="hero-label left">
-      <span class="hero-label-name">Giovanni & Ezequiel</span>
-      <span class="hero-label-tag">EZE & GIO</span>
+  <header class="app-header">
+    <div class="hdr-icon">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
     </div>
-    <div class="hero-label right">
-      <span class="hero-label-name">Pablo & Luca</span>
-      <span class="hero-label-tag">PABLUCA</span>
+    <div class="hdr-center">
+      <div class="hdr-title">Historial</div>
+      <div class="hdr-sub">Truco entre amigos</div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-dot"></div>
+      <div class="hdr-dot"></div>
+      <div class="hdr-dot"></div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-vs-line"></div>
+    <div class="hero-half left">
+      <img src="https://lh3.googleusercontent.com/d/1_xR0smZPEp_rdkD4U7E_P-OW6aASQMlU" alt="Eze & Gio">
+    </div>
+    <div class="hero-half right">
+      <img src="https://lh3.googleusercontent.com/d/1I6S2_zH6Ml6ey_eYi1T5WPOsrxJsS56r" alt="Pablo & Luca">
+    </div>
+    <div class="hero-vs">
+      <span class="hero-vs-text v">V</span>
+      <span class="hero-vs-text s">S</span>
+    </div>
+    <div class="hero-labels">
+      <div class="hero-label left">
+        <span class="hero-label-name">Giovanni & Ezequiel</span>
+        <span class="hero-label-tag">EZE & GIO</span>
+      </div>
+      <div class="hero-label right">
+        <span class="hero-label-name">Pablo & Luca</span>
+        <span class="hero-label-tag">PABLUCA</span>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ═══ RESUMEN ═══ -->
-<div class="resumen-wrap">
-  <div class="resumen-label">Resumen General</div>
-  <div class="resumen-row">
 
-    <div class="resumen-team">
-      <div class="resumen-wins eg">6</div>
-      <div class="resumen-wins-label">Victorias</div>
-    </div>
-
-    <div class="resumen-circle">
-      <svg viewBox="0 0 88 88">
-        <circle class="circle-bg" cx="44" cy="44" r="38"/>
-        <!-- full ring split: EG 60% red, PL 40% blue -->
-        <!-- total circumference for r=38: 2π*38 ≈ 238.8 -->
-        <circle fill="none" stroke="var(--eg)" stroke-width="4" stroke-linecap="butt"
-          cx="44" cy="44" r="38"
-          stroke-dasharray="143.3 238.8"
-          stroke-dashoffset="0"/>
-        <circle fill="none" stroke="var(--pl)" stroke-width="4" stroke-linecap="butt"
-          cx="44" cy="44" r="38"
-          stroke-dasharray="95.5 238.8"
-          stroke-dashoffset="-143.3"/>
-      </svg>
-      <div class="resumen-circle-inner">
-        <div class="circle-num">10</div>
-        <div class="circle-sub">Partidas<br>Jugadas</div>
+  <div class="resumen-wrap">
+    <div class="resumen-label">Resumen General</div>
+    <div class="resumen-row">
+      <div class="resumen-team">
+        <div class="resumen-wins eg">7</div>
+        <div class="resumen-wins-label">Victorias</div>
+      </div>
+      <div class="resumen-circle">
+        <svg viewBox="0 0 88 88">
+          <circle class="circle-bg" cx="44" cy="44" r="38"/> 
+          <circle fill="none" stroke="var(--eg)" stroke-width="4" stroke-linecap="butt" cx="44" cy="44" r="38" stroke-dasharray="151.9 238.8" stroke-dashoffset="0"/>
+          <circle fill="none" stroke="var(--pl)" stroke-width="4" stroke-linecap="butt" cx="44" cy="44" r="38" stroke-dasharray="86.9 238.8" stroke-dashoffset="-151.9"/>
+        </svg>
+        <div class="resumen-circle-inner">
+          <div class="circle-num">11</div>
+          <div class="circle-sub">Partidas<br>Jugadas</div>
+        </div>
+      </div>
+      <div class="resumen-team">
+        <div class="resumen-wins pl">4</div>
+        <div class="resumen-wins-label">Victorias</div>
       </div>
     </div>
-
-    <div class="resumen-team">
-      <div class="resumen-wins pl">4</div>
-      <div class="resumen-wins-label">Victorias</div>
-    </div>
-
   </div>
-</div>
 
-<hr class="section-divider">
+  <hr class="section-divider">
 
-<!-- ═══ HISTORIAL DE PARTIDAS ═══ -->
-<div class="hist-wrap">
-  <div class="hist-label">Historial de Partidas</div>
-  <div class="hist-list">
 
-    <div class="hist-row eg-row" style="animation-delay:.03s">
-      <span class="hist-num">01</span>
-      <span class="hist-date">27/07/26</span>
-      <div class="hist-mid">
-        <div class="hist-team eg">EZE &amp; GIO</div>
-        <div class="hist-won">Ganaron</div>
+  <div class="hist-wrap">
+    <div class="hist-label">Historial de Partidas</div>
+    <div class="hist-list">
+
+      <div class="hist-row eg-row special-row" style="animation-delay:.02s" onclick="openModal(0)">
+        <span class="hist-num" style="color:var(--gold)">01</span>
+        <span class="hist-date">09/08/26</span>
+        <div class="hist-mid">
+          <div class="hist-team eg">EZE & GIO</div>
+          <div class="hist-tag-special">⭐ REMONTADA Y DOMADA HISTÓRICA</div>
+        </div>
+        <span class="hist-score">30 - 27</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30 - 17</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
-    <div class="hist-row eg-row" style="animation-delay:.06s">
-      <span class="hist-num">02</span>
-      <span class="hist-date">23/07/26</span>
-      <div class="hist-mid">
-        <div class="hist-team eg">EZE &amp; GIO</div>
-        <div class="hist-won">Ganaron</div>
+      <div class="hist-row eg-row" style="animation-delay:.04s" onclick="openModal(1)">
+        <span class="hist-num">02</span>
+        <span class="hist-date">27/07/26</span>
+        <div class="hist-mid">
+          <div class="hist-team eg">EZE & GIO</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30 - 17</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30+3 - 16</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
-    <div class="hist-row eg-row" style="animation-delay:.09s">
-      <span class="hist-num">03</span>
-      <span class="hist-date">27/02/26</span>
-      <div class="hist-mid">
-        <div class="hist-team eg">EZE &amp; GIO</div>
-        <div class="hist-won">Ganaron</div>
+      <div class="hist-row eg-row" style="animation-delay:.06s" onclick="openModal(2)">
+        <span class="hist-num">03</span>
+        <span class="hist-date">23/07/26</span>
+        <div class="hist-mid">
+          <div class="hist-team eg">EZE & GIO</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30+3 - 16</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30 - 22</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
-    <div class="hist-row eg-row" style="animation-delay:.12s">
-      <span class="hist-num">04</span>
-      <span class="hist-date">13/01/26</span>
-      <div class="hist-mid">
-        <div class="hist-team eg">EZE &amp; GIO</div>
-        <div class="hist-won">Ganaron</div>
+      <div class="hist-row eg-row" style="animation-delay:.08s" onclick="openModal(3)">
+        <span class="hist-num">04</span>
+        <span class="hist-date">27/02/26</span>
+        <div class="hist-mid">
+          <div class="hist-team eg">EZE & GIO</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30 - 22</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30 - 18</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
-    <div class="hist-row pl-row" style="animation-delay:.15s">
-      <span class="hist-num">05</span>
-      <span class="hist-date">15/08/25</span>
-      <div class="hist-mid">
-        <div class="hist-team pl">PAB &amp; LUC</div>
-        <div class="hist-won">Ganaron</div>
+      <div class="hist-row eg-row" style="animation-delay:.10s" onclick="openModal(4)">
+        <span class="hist-num">05</span>
+        <span class="hist-date">13/01/26</span>
+        <div class="hist-mid">
+          <div class="hist-team eg">EZE & GIO</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30 - 18</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30 - 28</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
-    <div class="hist-row pl-row" style="animation-delay:.18s">
-      <span class="hist-num">06</span>
-      <span class="hist-date">06/08/25</span>
-      <div class="hist-mid">
-        <div class="hist-team pl">PAB &amp; LUC</div>
-        <div class="hist-won">Ganaron</div>
+      <div class="hist-row pl-row" style="animation-delay:.12s" onclick="openModal(5)">
+        <span class="hist-num">06</span>
+        <span class="hist-date">15/08/25</span>
+        <div class="hist-mid">
+          <div class="hist-team pl">PAB & LUC</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30 - 28</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30 - 24</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
-    <div class="hist-row pl-row" style="animation-delay:.21s">
-      <span class="hist-num">07</span>
-      <span class="hist-date">06/08/25</span>
-      <div class="hist-mid">
-        <div class="hist-team pl">PAB &amp; LUC</div>
-        <div class="hist-won">Ganaron</div>
+      <div class="hist-row pl-row" style="animation-delay:.14s" onclick="openModal(6)">
+        <span class="hist-num">07</span>
+        <span class="hist-date">06/08/25</span>
+        <div class="hist-mid">
+          <div class="hist-team pl">PAB & LUC</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30 - 24</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30 - 20</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
-    <div class="hist-row eg-row" style="animation-delay:.24s">
-      <span class="hist-num">08</span>
-      <span class="hist-date">02/02/25</span>
-      <div class="hist-mid">
-        <div class="hist-team eg">EZE &amp; GIO</div>
-        <div class="hist-won">Ganaron</div>
+      <div class="hist-row pl-row" style="animation-delay:.16s" onclick="openModal(7)">
+        <span class="hist-num">08</span>
+        <span class="hist-date">06/08/25</span>
+        <div class="hist-mid">
+          <div class="hist-team pl">PAB & LUC</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30 - 20</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30 - 26</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
-    <div class="hist-row eg-row" style="animation-delay:.27s">
-      <span class="hist-num">09</span>
-      <span class="hist-date">03/01/25</span>
-      <div class="hist-mid">
-        <div class="hist-team eg">EZE &amp; GIO</div>
-        <div class="hist-won">Ganaron</div>
+      <div class="hist-row eg-row" style="animation-delay:.18s" onclick="openModal(8)">
+        <span class="hist-num">09</span>
+        <span class="hist-date">02/02/25</span>
+        <div class="hist-mid">
+          <div class="hist-team eg">EZE & GIO</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30 - 26</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30 - 22</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
-    <div class="hist-row pl-row" style="animation-delay:.30s">
-      <span class="hist-num">10</span>
-      <span class="hist-date">24/07/24</span>
-      <div class="hist-mid">
-        <div class="hist-team pl">PAB &amp; LUC</div>
-        <div class="hist-won">Ganaron</div>
+      <div class="hist-row eg-row" style="animation-delay:.20s" onclick="openModal(9)">
+        <span class="hist-num">10</span>
+        <span class="hist-date">03/01/25</span>
+        <div class="hist-mid">
+          <div class="hist-team eg">EZE & GIO</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30 - 22</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
-      <span class="hist-score">30 - 16</span>
-      <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
 
+      <div class="hist-row pl-row" style="animation-delay:.22s" onclick="openModal(10)">
+        <span class="hist-num">11</span>
+        <span class="hist-date">24/07/24</span>
+        <div class="hist-mid">
+          <div class="hist-team pl">PAB & LUC</div>
+          <div class="hist-won">Ganaron</div>
+        </div>
+        <span class="hist-score">30 - 16</span>
+        <span class="hist-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </div>
+
+    </div>
   </div>
 </div>
 
-<!-- ═══ BOTTOM NAV ═══ -->
+
+<div id="sec-stats" class="section">
+
+  <div class="page-header">
+    <div class="page-title">Estadísticas</div>
+    <div class="page-sub">Rendimiento de ambos equipos · 11 partidas</div>
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card eg-card">
+      <div class="stat-card-label">Victorias</div>
+      <div class="stat-card-value eg">7</div>
+      <div class="stat-card-sub">Eze & Gio · 64%</div>
+    </div>
+
+    <div class="stat-card pl-card">
+      <div class="stat-card-label">Victorias</div>
+      <div class="stat-card-value pl">4</div>
+      <div class="stat-card-sub">Pab & Luc · 36%</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-label">Partidas</div>
+      <div class="stat-card-value neutral">11</div>
+      <div class="stat-card-sub">jugadas en total</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-label">Última Partida</div>
+      <div class="stat-card-value eg" style="font-size:28px">30–27</div>
+      <div class="stat-card-sub">Remontada E&G · 09/08/26</div>
+    </div>
+
+    <div class="stat-card stat-card-full">
+      <div class="stat-card-label">Partido destacado</div>
+      <div class="stat-card-value eg" style="font-size:24px;letter-spacing:-0.5px;color:var(--gold)">⭐ Remontada Histórica</div>
+      <div class="stat-card-sub">Eze & Gio ganaron 30–27 en un cierre épico · 09/08/26</div>
+    </div>
+
+  </div>
+
+  <div class="bar-section">
+    <div class="bar-section-title">Win rate por año</div>
+
+    <div class="bar-row">
+      <span class="bar-row-label">2024</span>
+      <div class="bar-track"><div class="bar-fill pl" style="width:100%"></div></div>
+      <span class="bar-val" style="color:var(--pl)">P&L</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-row-label">2025</span>
+      <div class="bar-track"><div class="bar-fill pl" style="width:60%"></div></div>
+      <span class="bar-val" style="color:var(--text-dim)">3 - 2</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-row-label">2026</span>
+      <div class="bar-track"><div class="bar-fill eg" style="width:100%"></div></div>
+      <span class="bar-val" style="color:var(--eg)">5 - 0</span>
+    </div>
+  </div>
+
+  <div class="score-dist">
+    <div class="bar-section-title" style="margin-top:0">Todos los resultados</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:4px 16px;">
+      <div class="dist-row">
+        <span class="dist-match">09 Ago 2026 ⭐</span>
+        <span class="dist-score">30 – 27</span>
+        <span class="dist-badge eg">E&G</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">27 Jul 2026</span>
+        <span class="dist-score">30 – 17</span>
+        <span class="dist-badge eg">E&G</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">23 Jul 2026</span>
+        <span class="dist-score">30+3 – 16</span>
+        <span class="dist-badge eg">E&G</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">27 Feb 2026</span>
+        <span class="dist-score">30 – 22</span>
+        <span class="dist-badge eg">E&G</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">13 Ene 2026</span>
+        <span class="dist-score">30 – 18</span>
+        <span class="dist-badge eg">E&G</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">15 Ago 2025</span>
+        <span class="dist-score">30 – 28</span>
+        <span class="dist-badge pl">P&L</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">06 Ago 2025</span>
+        <span class="dist-score">30 – 24</span>
+        <span class="dist-badge pl">P&L</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">06 Ago 2025</span>
+        <span class="dist-score">30 – 20</span>
+        <span class="dist-badge pl">P&L</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">02 Feb 2025</span>
+        <span class="dist-score">30 – 26</span>
+        <span class="dist-badge eg">E&G</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">03 Ene 2025</span>
+        <span class="dist-score">30 – 22</span>
+        <span class="dist-badge eg">E&G</span>
+      </div>
+      <div class="dist-row">
+        <span class="dist-match">24 Jul 2024</span>
+        <span class="dist-score">30 – 16</span>
+        <span class="dist-badge pl">P&L</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="sec-amigos" class="section">
+
+  <div class="page-header">
+    <div class="page-title">Los equipos</div>
+    <div class="page-sub">4 jugadores · 2 equipos</div>
+  </div>
+
+  <div class="amigos-wrap">
+
+    <!-- Equipo EZE & GIO -->
+    <div class="team-section">
+      <div class="team-section-title">Eze & Gio</div>
+
+      <div class="team-banner eg-banner">
+        <img src="https://lh3.googleusercontent.com/d/1_xR0smZPEp_rdkD4U7E_P-OW6aASQMlU" alt="Eze & Gio">
+        <div class="team-banner-info">
+          <div class="team-banner-name">Eze & Gio</div>
+          <div class="team-banner-record">7 victorias · 64%</div>
+        </div>
+      </div>
+      <div class="player-card eg-card">
+        <div class="player-avatar-placeholder" style="background:var(--eg-soft);color:var(--eg)">E</div>
+        <div class="player-info">
+          <div class="player-name">Ezequiel</div>
+          <div class="player-role eg">EZE & GIO</div>
+          <div class="player-stats">
+            <div class="player-stat">
+              <span class="player-stat-num eg">7</span>
+              <span class="player-stat-label">Wins</span>
+            </div>
+            <div class="player-stat">
+              <span class="player-stat-num" style="color:var(--text-dim)">4</span>
+              <span class="player-stat-label">Losses</span>
+            </div>
+            <div class="player-stat">
+              <span class="player-stat-num" style="color:var(--text)">64%</span>
+              <span class="player-stat-label">Win rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="player-card eg-card">
+        <div class="player-avatar-placeholder" style="background:var(--eg-soft);color:var(--eg)">G</div>
+        <div class="player-info">
+          <div class="player-name">Giovanni</div>
+          <div class="player-role eg">EZE & GIO</div>
+          <div class="player-stats">
+            <div class="player-stat">
+              <span class="player-stat-num eg">7</span>
+              <span class="player-stat-label">Wins</span>
+            </div>
+            <div class="player-stat">
+              <span class="player-stat-num" style="color:var(--text-dim)">4</span>
+              <span class="player-stat-label">Losses</span>
+            </div>
+            <div class="player-stat">
+              <span class="player-stat-num" style="color:var(--text)">64%</span>
+              <span class="player-stat-label">Win rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Equipo PAB & LUC -->
+    <div class="team-section">
+      <div class="team-section-title">Pablo & Luca</div>
+
+      <div class="team-banner pl-banner">
+        <img src="https://lh3.googleusercontent.com/d/1I6S2_zH6Ml6ey_eYi1T5WPOsrxJsS56r" alt="Pablo & Luca">
+        <div class="team-banner-info">
+          <div class="team-banner-name">Pablo & Luca</div>
+          <div class="team-banner-record">4 victorias · 36%</div>
+        </div>
+      </div>
+      <div class="player-card pl-card">
+        <div class="player-avatar-placeholder" style="background:var(--pl-soft);color:var(--pl)">P</div>
+        <div class="player-info">
+          <div class="player-name">Pablo</div>
+          <div class="player-role pl">PABLUCA</div>
+          <div class="player-stats">
+            <div class="player-stat">
+              <span class="player-stat-num pl">4</span>
+              <span class="player-stat-label">Wins</span>
+            </div>
+            <div class="player-stat">
+              <span class="player-stat-num" style="color:var(--text-dim)">7</span>
+              <span class="player-stat-label">Losses</span>
+            </div>
+            <div class="player-stat">
+              <span class="player-stat-num" style="color:var(--text)">36%</span>
+              <span class="player-stat-label">Win rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="player-card pl-card">
+        <div class="player-avatar-placeholder" style="background:var(--pl-soft);color:var(--pl)">L</div>
+        <div class="player-info">
+          <div class="player-name">Luca</div>
+          <div class="player-role pl">PABLUCA</div>
+          <div class="player-stats">
+            <div class="player-stat">
+              <span class="player-stat-num pl">4</span>
+              <span class="player-stat-label">Wins</span>
+            </div>
+            <div class="player-stat">
+              <span class="player-stat-num" style="color:var(--text-dim)">7</span>
+              <span class="player-stat-label">Losses</span>
+            </div>
+            <div class="player-stat">
+              <span class="player-stat-num" style="color:var(--text)">36%</span>
+              <span class="player-stat-label">Win rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div id="sec-ajustes" class="section">
+
+  <div class="page-header">
+    <div class="page-title">Ajustes</div>
+    <div class="page-sub">Club del Truco</div>
+  </div>
+
+  <div class="settings-wrap">
+
+    <div class="settings-group">
+      <div class="settings-group-title">Equipos</div>
+
+      <div class="settings-item">
+        <div class="settings-item-icon settings-icon-eg">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        </div>
+        <div class="settings-item-info">
+          <div class="settings-item-title">Eze & Gio</div>
+          <div class="settings-item-desc">Editar nombre del equipo</div>
+        </div>
+        <div class="settings-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <div class="settings-item">
+        <div class="settings-item-icon settings-icon-pl">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        </div>
+        <div class="settings-item-info">
+          <div class="settings-item-title">Pablo & Luca</div>
+          <div class="settings-item-desc">Editar nombre del equipo</div>
+        </div>
+        <div class="settings-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">Apariencia</div>
+
+      <div class="settings-item">
+        <div class="settings-item-icon settings-icon-neutral">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </div>
+        <div class="settings-item-info">
+          <div class="settings-item-title">Modo oscuro</div>
+          <div class="settings-item-desc">Activado siempre</div>
+        </div>
+        <div class="settings-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <div class="settings-item">
+        <div class="settings-item-icon settings-icon-neutral">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <div class="settings-item-info">
+          <div class="settings-item-title">Fuente</div>
+          <div class="settings-item-desc">Outfit · Playfair Display</div>
+        </div>
+        <div class="settings-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">Datos</div>
+
+      <div class="settings-item">
+        <div class="settings-item-icon settings-icon-neutral">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.36"/></svg>
+        </div>
+        <div class="settings-item-info">
+          <div class="settings-item-title">Resetear datos</div>
+          <div class="settings-item-desc">Borrar todo el historial</div>
+        </div>
+        <div class="settings-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <div class="settings-item">
+        <div class="settings-item-icon settings-icon-neutral">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <div class="settings-item-info">
+          <div class="settings-item-title">Exportar historial</div>
+          <div class="settings-item-desc">Descargar como archivo</div>
+        </div>
+        <div class="settings-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </div>
+
+    <div class="app-info">
+      <div class="app-info-name">Club del Truco</div>
+      <div class="app-info-ver">versión 2.0 · 2026</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div>
+        <div class="modal-num" id="modal-num">Partida 01</div>
+        <div class="modal-date" id="modal-date">09 de agosto, 2026</div>
+      </div>
+      <div class="modal-badge" id="modal-badge">E&G</div>
+    </div>
+    
+    <div class="modal-special-banner" id="modal-special">
+      ⭐ REMONTADA Y DOMADA HISTÓRICA ⭐
+    </div>
+
+    <div class="modal-score-row">
+      <div class="modal-score-block">
+        <span class="modal-score-team" id="modal-team-l">EZE & GIO</span>
+        <span class="modal-score-num winner" id="modal-score-w">30</span>
+      </div>
+      <span class="modal-score-vs">—</span>
+      <div class="modal-score-block">
+        <span class="modal-score-team" id="modal-team-r">PAB & LUC</span>
+        <span class="modal-score-num loser" id="modal-score-l">27</span>
+      </div>
+    </div>
+    <div class="modal-winner-tag">Ganó <span id="modal-winner-name" class="eg">Eze & Gio</span></div>
+    <button class="modal-close" onclick="closeModal()">Cerrar</button>
+  </div>
+</div>
+
 <nav class="bottom-nav">
-  <button class="nav-item">
+  <button class="nav-item" id="nav-inicio" onclick="goTo('inicio')">
     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
     <span class="nav-label">Inicio</span>
   </button>
-  <button class="nav-item">
+  <button class="nav-item" id="nav-stats" onclick="goTo('stats')">
     <span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
     <span class="nav-label">Stats</span>
   </button>
-  <button class="nav-item center-nav active">
+  <button class="nav-item center-nav active" id="nav-historial" onclick="goTo('historial')">
     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8 7 3 9.5 3 14a5 5 0 0 0 4.5 5c1.6 0 3-.7 3.8-1.8L11 22h2l-.3-4.8c.8 1.1 2.2 1.8 3.8 1.8A5 5 0 0 0 21 14c0-4.5-5-7-9-12z" fill="currentColor" stroke="none"/></svg></span>
   </button>
-  <button class="nav-item">
+  <button class="nav-item" id="nav-amigos" onclick="goTo('amigos')">
     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
     <span class="nav-label">Amigos</span>
   </button>
-  <button class="nav-item">
+  <button class="nav-item" id="nav-ajustes" onclick="goTo('ajustes')">
     <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
     <span class="nav-label">Ajustes</span>
   </button>
 </nav>
 
+
+<script>
+
+/* NAVIGATION */
+const sections = {
+  inicio:    'sec-historial',
+  historial: 'sec-historial',
+  stats:     'sec-stats',
+  amigos:    'sec-amigos',
+  ajustes:   'sec-ajustes',
+};
+
+function goTo(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  
+  const targetId = sections[name] || 'sec-historial';
+  document.getElementById(targetId).classList.add('active');
+  
+  const navId = name === 'inicio' ? 'nav-historial' : 'nav-' + name;
+  const btn = document.getElementById(navId);
+  if(btn) btn.classList.add('active');
+  
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+/*  MATCH MODAL  */
+const matches = [
+  { num:'01', date:'09 de agosto, 2026',   teamW:'EZE & GIO', teamL:'PAB & LUC', scoreW:'30',   scoreL:'27', winner:'Eze & Gio', team:'eg', special:'⭐ REMONTADA Y DOMADA HISTÓRICA ⭐' },
+  { num:'02', date:'27 de julio, 2026',    teamW:'EZE & GIO', teamL:'PAB & LUC', scoreW:'30',   scoreL:'17', winner:'Eze & Gio', team:'eg' },
+  { num:'03', date:'23 de julio, 2026',    teamW:'EZE & GIO', teamL:'PAB & LUC', scoreW:'30+3', scoreL:'16', winner:'Eze & Gio', team:'eg' },
+  { num:'04', date:'27 de febrero, 2026',  teamW:'EZE & GIO', teamL:'PAB & LUC', scoreW:'30',   scoreL:'22', winner:'Eze & Gio', team:'eg' },
+  { num:'05', date:'13 de enero, 2026',    teamW:'EZE & GIO', teamL:'PAB & LUC', scoreW:'30',   scoreL:'18', winner:'Eze & Gio', team:'eg' },
+  { num:'06', date:'15 de agosto, 2025',   teamW:'PAB & LUC', teamL:'EZE & GIO', scoreW:'30',   scoreL:'28', winner:'Pablo & Luca', team:'pl' },
+  { num:'07', date:'06 de agosto, 2025',   teamW:'PAB & LUC', teamL:'EZE & GIO', scoreW:'30',   scoreL:'24', winner:'Pablo & Luca', team:'pl' },
+  { num:'08', date:'06 de agosto, 2025',   teamW:'PAB & LUC', teamL:'EZE & GIO', scoreW:'30',   scoreL:'20', winner:'Pablo & Luca', team:'pl' },
+  { num:'09', date:'02 de febrero, 2025',  teamW:'EZE & GIO', teamL:'PAB & LUC', scoreW:'30',   scoreL:'26', winner:'Eze & Gio', team:'eg' },
+  { num:'10', date:'03 de enero, 2025',    teamW:'EZE & GIO', teamL:'PAB & LUC', scoreW:'30',   scoreL:'22', winner:'Eze & Gio', team:'eg' },
+  { num:'11', date:'24 de julio, 2024',    teamW:'PAB & LUC', teamL:'EZE & GIO', scoreW:'30',   scoreL:'16', winner:'Pablo & Luca', team:'pl' },
+];
+
+function openModal(i) {
+  const m = matches[i];
+  document.getElementById('modal-num').textContent   = 'Partida ' + m.num;
+  document.getElementById('modal-date').textContent  = m.date;
+  document.getElementById('modal-team-l').textContent = m.teamW;
+  document.getElementById('modal-team-r').textContent = m.teamL;
+  document.getElementById('modal-score-w').textContent = m.scoreW;
+  document.getElementById('modal-score-l').textContent = m.scoreL;
+  
+  const badge = document.getElementById('modal-badge');
+  badge.textContent = m.team === 'eg' ? 'E&G' : 'P&L';
+  badge.className = 'modal-badge ' + m.team;
+  
+  const winnerEl = document.getElementById('modal-winner-name');
+  winnerEl.textContent = m.winner;
+  winnerEl.className = m.team;
+
+  const specEl = document.getElementById('modal-special');
+  if (m.special) {
+    specEl.textContent = m.special;
+    specEl.classList.add('show');
+  } else {
+    specEl.classList.remove('show');
+  }
+
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+function closeModalOutside(e) {
+  if(e.target === document.getElementById('modal')) closeModal();
+}
+
+</script>
 </body>
 </html>
